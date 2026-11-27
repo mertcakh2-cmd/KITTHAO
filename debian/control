@@ -1,0 +1,10 @@
+Package: kittyhao
+Version: 1.0.0
+Section: shells
+Priority: optional
+Architecture: all
+Depends: bash, coreutils, grep, sed, apt, dpkg
+Maintainer: KITTYHAO Developer
+Description: Customizable Debian terminal environment
+ KITTYHAO is a customizable terminal environment
+ with themes, configuration and package management.
