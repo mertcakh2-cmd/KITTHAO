@@ -1,0 +1,47 @@
+name: KITTYHAO Multi-Platform Builder
+
+on:
+push:
+branches: [main]
+workflow_dispatch:
+
+permissions:
+contents: read
+
+jobs:
+build:
+runs-on: ubuntu-latest
+
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
+
+  - name: Install dependencies
+    run: |
+      sudo apt update
+      sudo apt install -y dpkg-dev make
+
+  - name: Build Debian package
+    run: |
+      make clean
+      make debian
+      mv kittyhao_*_debian_all.deb KITTYHAO-DEBIAN.deb
+
+  - name: Build Termux package
+    run: |
+      make termux
+      mv kittyhao_*_termux_all.deb KITTYHAO-TERMUX.deb
+
+  - name: Validate packages
+    run: |
+      dpkg-deb --info KITTYHAO-DEBIAN.deb
+      dpkg-deb --info KITTYHAO-TERMUX.deb
+
+  - name: Upload Debian and Termux packages
+    uses: actions/upload-artifact@v4
+    with:
+      name: KITTYHAO-PACKAGES
+      path: |
+        KITTYHAO-DEBIAN.deb
+        KITTYHAO-TERMUX.deb
+      if-no-files-found: error
