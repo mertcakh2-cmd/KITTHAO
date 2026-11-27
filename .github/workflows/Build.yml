@@ -1,22 +1,14 @@
-name: KITTYHAO Multi-Platform Builder
-
-on: [push, workflow_dispatch]
-
-permissions:
-contents: read
+name: KITTYHAO Builder
+on: push
 
 jobs:
 build:
 runs-on: ubuntu-latest
-
 steps:
-  - name: Checkout
-    uses: actions/checkout@v4
+- uses: actions/checkout@v4
 
   - name: Install dependencies
-    run: |
-      sudo apt-get update
-      sudo apt-get install -y dpkg-dev make
+    run: sudo apt-get update && sudo apt-get install -y dpkg-dev make
 
   - name: Build Debian
     run: |
@@ -29,16 +21,14 @@ steps:
       make termux
       mv kittyhao_*_termux_all.deb KITTYHAO-TERMUX.deb
 
-  - name: Validate packages
+  - name: Validate
     run: |
       dpkg-deb --info KITTYHAO-DEBIAN.deb
       dpkg-deb --info KITTYHAO-TERMUX.deb
 
-  - name: Upload packages
-    uses: actions/upload-artifact@v4
+  - uses: actions/upload-artifact@v4
     with:
       name: KITTYHAO-PACKAGES
       path: |
         KITTYHAO-DEBIAN.deb
         KITTYHAO-TERMUX.deb
-      if-no-files-found: error
