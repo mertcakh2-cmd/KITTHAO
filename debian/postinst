@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+chmod +x /usr/bin/kittyhao
+
+echo ""
+echo "KITTYHAO installed successfully!"
+echo "Run: kittyhao"
+echo ""
+
+exit 0
