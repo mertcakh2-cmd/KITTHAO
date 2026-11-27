@@ -1,9 +1,6 @@
 name: KITTYHAO Multi-Platform Builder
 
-on:
-push:
-branches: [main]
-workflow_dispatch:
+on: [push, workflow_dispatch]
 
 permissions:
 contents: read
@@ -18,16 +15,16 @@ steps:
 
   - name: Install dependencies
     run: |
-      sudo apt update
-      sudo apt install -y dpkg-dev make
+      sudo apt-get update
+      sudo apt-get install -y dpkg-dev make
 
-  - name: Build Debian package
+  - name: Build Debian
     run: |
       make clean
       make debian
       mv kittyhao_*_debian_all.deb KITTYHAO-DEBIAN.deb
 
-  - name: Build Termux package
+  - name: Build Termux
     run: |
       make termux
       mv kittyhao_*_termux_all.deb KITTYHAO-TERMUX.deb
@@ -37,7 +34,7 @@ steps:
       dpkg-deb --info KITTYHAO-DEBIAN.deb
       dpkg-deb --info KITTYHAO-TERMUX.deb
 
-  - name: Upload Debian and Termux packages
+  - name: Upload packages
     uses: actions/upload-artifact@v4
     with:
       name: KITTYHAO-PACKAGES
