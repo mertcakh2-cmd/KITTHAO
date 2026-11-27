@@ -1,15 +1,17 @@
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 
-PREFIX="/usr/share/kittyhao"
+PREFIX="${PREFIX:-/usr}"
+BASE="$PREFIX/lib/kittyhao"
+
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/kittyhao"
 
 mkdir -p "$CONFIG_DIR"
 
-export KH_PREFIX="$PREFIX"
+export KH_PREFIX="$BASE"
 export KH_CONFIG="$CONFIG_DIR"
 
 for file in colors config themes packages commands main; do
-    source "$PREFIX/core/$file.sh"
+    source "$BASE/core/$file.sh"
 done
 
 kh_start
