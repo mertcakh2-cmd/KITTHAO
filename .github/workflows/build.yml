@@ -1,0 +1,42 @@
+name: KITTYHAO Debian Builder
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        arch: [all]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y dpkg-dev make
+
+      - name: Build package
+        run: |
+          make clean
+          make deb
+
+      - name: Validate package
+        run: |
+          dpkg-deb --info kittyhao_1.0.0_all.deb
+          dpkg-deb --contents kittyhao_1.0.0_all.deb
+
+      - name: Upload DEB
+        uses: actions/upload-artifact@v4
+        with:
+          name: KITTYHAO-DEBIAN
+          path: "*.deb"
