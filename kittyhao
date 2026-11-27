@@ -1,0 +1,15 @@
+#!/bin/bash
+
+PREFIX="/usr/share/kittyhao"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/kittyhao"
+
+mkdir -p "$CONFIG_DIR"
+
+export KH_PREFIX="$PREFIX"
+export KH_CONFIG="$CONFIG_DIR"
+
+for file in colors config themes packages commands main; do
+    source "$PREFIX/core/$file.sh"
+done
+
+kh_start
